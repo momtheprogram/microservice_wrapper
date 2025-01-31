@@ -1,23 +1,37 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from .forms import TicketForm
 import requests
+from django.shortcuts import render
+from .forms import TicketForm
 
 
-@api_view(['POST'])
 def create_ticket(request):
-    form = TicketForm(request.data)
-    if form.is_valid():
-        data = {
-            'subject': form.cleaned_data['subject'],
-            'message': form.cleaned_data['message'],
-            'email': form.cleaned_data['email'],
-        }
-        response = requests.post('http://your-helpdesk-url/api/tickets/', json=data)
-
-        if response.status_code == 201:
-            return JsonResponse({'ticket_number': response.json().get('ticket_number')}, status=201)
-        else:
-            return JsonResponse({'error': 'Failed to create ticket'}, status=response.status_code)
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            data = {
+                "queue": form.cleaned_data['queue'],
+                "title": form.cleaned_data['title'],
+                "description": form.cleaned_data['description'],
+                "submitter_email": form.cleaned_data['submitter_email'],
+                "priority": form.cleaned_data['priority'],
+            }
+            response = requests.post(
+                'http://127.0.0.1:8000/api/tickets/',
+                json=data,
+                headers={
+                    'Authorization': 'Basic YWRtaW46YWRtaW4=',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            )
+            if response.status_code == 201:
+                ticket_id = response.json().get('id')
+                return render(request, 'support/success.html', {'ticket_id': ticket_id})
+            else:
+                context = {
+                    'error': 'Произошла ошибка при создании тикета'
+                }
+                return render(request, 'support/error.html', context)
     else:
-        return JsonResponse({'errors': form.errors}, status=400)
+        form = TicketForm()
+
+    return render(request, 'support/create_ticket.html', {'form': form})

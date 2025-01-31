@@ -1,10 +1,8 @@
-
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 
 urlpatterns = [
-    # path('api/tickets/', create_ticket, name='create_ticket'),
     path('admin/', admin.site.urls),
-    path('support/', include('support.urls')),
+    path('', include('support.urls')),
 ]
