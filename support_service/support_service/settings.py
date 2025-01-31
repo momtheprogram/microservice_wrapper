@@ -1,7 +1,9 @@
 import os
+import environ
+
 from pathlib import Path
 
-import environ
+from rest_framework.authentication import TokenAuthentication
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +36,8 @@ INSTALLED_APPS = [
     'pinax.teams',
     'reversion',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djangorestframework-simplejwt',
 
     'support.apps.SupportConfig',
 ]
@@ -92,6 +96,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 LANGUAGE_CODE = 'en-us'
 

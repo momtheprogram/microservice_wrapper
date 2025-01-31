@@ -28,7 +28,8 @@ def create_ticket(request):
                 return render(request, 'support/success.html', {'ticket_id': ticket_id})
             else:
                 context = {
-                    'error': 'Произошла ошибка при создании тикета'
+                    'error': 'Произошла ошибка при создании тикета',
+                    'status_code': response.status_code,
                 }
                 return render(request, 'support/error.html', context)
     else:
