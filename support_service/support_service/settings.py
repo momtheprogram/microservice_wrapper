@@ -3,8 +3,7 @@ import environ
 
 from pathlib import Path
 
-from rest_framework.authentication import TokenAuthentication
-
+# from rest_framework.authentication import TokenAuthentication
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
