@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'pinax.teams',
     'reversion',
     'rest_framework',
-    'rest_framework.authtoken',
-    'djangorestframework-simplejwt',
+    # 'rest_framework.authtoken',
+    # 'djangorestframework-simplejwt',
 
     'support.apps.SupportConfig',
 ]
